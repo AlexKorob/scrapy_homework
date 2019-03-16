@@ -7,7 +7,11 @@
 
 import json
 
+
 class JsonWriterPipeline:
+    def __init__(self):
+        arr = []
+
     def open_spider(self, spider):
         self.file = open('result.json', 'w')
 
