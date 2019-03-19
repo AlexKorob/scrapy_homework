@@ -16,3 +16,4 @@ class WarehouseItem(Item):
     sizes = Field()
     price = Field()
     description = Field()
+    url = Field()

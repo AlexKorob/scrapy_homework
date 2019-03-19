@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -77,8 +76,12 @@ WSGI_APPLICATION = 'parsing_site.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': "warehouse",
+        'USER': "alex",
+        'PASSWORD': "123",
+        'HOST': 'localhost',
+        'PORT': 5432
     }
 }
 
@@ -120,3 +123,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Celery settings
+CELERY_BROKER_URL = 'redis://localhost:6379/1'
+CELERY_BACKEND_URL = 'redis://localhost:6379/1'

@@ -1,17 +1,18 @@
 from django.db import models
 
 
-class Warehouse(models.Model):
+class WarehouseItem(models.Model):
     category = models.CharField(max_length=100)
     company = models.CharField(max_length=100)
     title = models.CharField(max_length=100)
-    images = models.ForeignKey("Image", on_delete=models.CASCADE, related_name="warehouses")
-    sizes = models.ForeignKey("Size", on_delete=models.CASCADE, related_name="warehouses")
+    sizes = models.ManyToManyField("Size", related_name="warehouses")
     price = models.CharField(max_length=50)
-    description = models.TextField()
+    description = models.TextField(max_length=500)
+    url = models.SlugField(max_length=255)
 
 
 class Image(models.Model):
+    item = models.ForeignKey(WarehouseItem, on_delete=models.CASCADE, related_name="images")
     url = models.CharField(max_length=200)
 
 

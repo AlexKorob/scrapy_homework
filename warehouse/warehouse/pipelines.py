@@ -4,21 +4,16 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
+from my_site.tasks import save_warehouse_item
 
-import json
 
-
-class JsonWriterPipeline:
+class WarehousePipeline:
     def __init__(self):
-        arr = []
-
-    def open_spider(self, spider):
-        self.file = open('result.json', 'w')
-
-    def close_spider(self, spider):
-        self.file.close()
+        self.limit_to_save = 10
+        self.items = []
 
     def process_item(self, item, spider):
-        line = json.dumps(dict(item)) + "\n"
-        self.file.write(line)
-        return item
+        self.items.append(dict(item))
+        if len(self.items) == self.limit_to_save or spider.worked:
+            save_warehouse_item.delay(self.items)
+            self.items = []

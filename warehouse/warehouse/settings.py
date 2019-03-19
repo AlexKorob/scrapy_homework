@@ -9,6 +9,14 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
+import os
+import sys
+import django
+
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath('.')), 'parsing_site'))
+os.environ['DJANGO_SETTINGS_MODULE'] = 'parsing_site.settings'
+django.setup()
+
 BOT_NAME = 'warehouse'
 
 SPIDER_MODULES = ['warehouse.spiders']
@@ -39,15 +47,25 @@ ROBOTSTXT_OBEY = False
 #TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
-# DEFAULT_REQUEST_HEADERS = {
-#
-# }
+DEFAULT_REQUEST_HEADERS = {
+  ':authority': 'www.barneyswarehouse.com',
+  ':method': 'GET',
+  ':path': '/category/men/clothing/activewear/N-1f3gneh',
+  ':scheme': 'https',
+  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  'Accept-Encoding': 'gzip, deflate, br',
+  'Accept-Language': 'en-US;q=0.9,en;q=0.8',
+  'Cache-Control': 'no-cache',
+  'Pragma': 'no-cache',
+  'Upgrade-Insecure-Requests': '1',
+  'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)Chrome/70.0.3538.77 Safari/537.36',
+}
 
 # Setting for scrapy_redis
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 ITEM_PIPELINES = {
-    'scrapy_redis.pipelines.RedisPipeline': 300
+    'warehouse.pipelines.WarehousePipeline': 300,
 }
 
 # Enable or disable spider middlewares
@@ -70,9 +88,9 @@ ITEM_PIPELINES = {
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
-   'warehouse.pipelines.JsonWriterPipeline': 300,
-}
+# ITEM_PIPELINES = {
+#    'warehouse.pipelines.JsonWriterPipeline': 300,
+# }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
