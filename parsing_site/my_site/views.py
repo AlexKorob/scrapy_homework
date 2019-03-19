@@ -1,9 +1,7 @@
 from django.shortcuts import render
 from django.views import View
-from .models import WarehouseItem, Image, Size
+from .models import WarehouseItem, Image
 from django.http import HttpResponse, JsonResponse
-from scrapy.utils.project import get_project_settings
-from django.core.serializers import serialize
 import redis
 import json
 
@@ -27,7 +25,7 @@ class Index(View):
                                   "images": images,
                                   "price": item.price,
                                   "sizes": sizes,
-                                  "description" : item.description,}
+                                  "description": item.description, }
 
             return JsonResponse(items)
         return render(request, "my_site/index.html")

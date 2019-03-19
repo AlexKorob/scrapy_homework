@@ -1,8 +1,6 @@
 import scrapy
 from ..items import WarehouseItem
 from scrapy_redis.spiders import RedisSpider
-from scrapy import signals
-from scrapy.xlib.pydispatch import dispatcher
 
 
 class WarehouseSpider(RedisSpider):
@@ -44,9 +42,7 @@ class WarehouseSpider(RedisSpider):
 
             for category_text, url in categories:
                 url = self.prefix_url + url
-                yield scrapy.Request(url,
-                                     headers=self.HEADERS,
-                                     meta={"category_text": category_text},
+                yield scrapy.Request(url, headers=self.HEADERS, meta={"category_text": category_text},
                                      callback=self.parse_category)
         else:
             url = response.request.url
